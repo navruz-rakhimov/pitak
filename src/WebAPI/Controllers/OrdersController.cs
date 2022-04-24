@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Order>> GetOrders()
         {
-            return Ok(_context.Orders);
+            return Ok(_context.Orders.ToList());
         }
 
         [HttpGet("{id}", Name = "GetOrderById")]
@@ -44,6 +44,19 @@ namespace WebAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtRoute(nameof(GetOrderById), new { Id = order.Id }, order);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<Order>> DeleteOrder(int id)
+        {
+            var order = _context.Orders.FirstOrDefault(order => order.Id == id);
+            if (order != null)
+            {
+                _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
+                return order;
+            }
+            return NotFound();
         }
     }
 }

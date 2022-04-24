@@ -8,6 +8,8 @@
         public string SourceCity { get; set; }
         public string DestinationCity { get; set; }
         public decimal Price { get; set; }
+        public int? DriverId { get; set; }
+        public Driver Driver { get; set; }
         public int AvailablSeats { get; set; }
         public bool IsClosed { get; set; } = false;
         public ICollection<Orderer> Orderers { get; set; }

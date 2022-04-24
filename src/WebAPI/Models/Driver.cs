@@ -8,7 +8,9 @@ namespace WebAPI.Models
         public int? Experience { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
-        public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public Vehicle Vehicle { get; set; }
+        public int VehicleId { get; set; }
         public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }
