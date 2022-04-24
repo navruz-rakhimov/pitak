@@ -10,6 +10,10 @@ namespace WebAPI.Profiles
         {
             // Source -> Target
             CreateMap<OrderCreateDto, Order>();
+
+            // pox
+            CreateMap<OrdererCreateDto, Orderer>();
+            CreateMap<PaymentCreateDto, Payment>();
         }
     }
 }
