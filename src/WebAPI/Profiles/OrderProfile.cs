@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using WebAPI.Dtos;
 using WebAPI.Models;
+using WebAPI.ReadDtos;
 
 namespace WebAPI.Profiles
 {
@@ -10,10 +11,15 @@ namespace WebAPI.Profiles
         {
             // Source -> Target
             CreateMap<OrderCreateDto, Order>();
-
-            // pox
             CreateMap<OrdererCreateDto, Orderer>();
             CreateMap<PaymentCreateDto, Payment>();
+            
+            CreateMap<Order, OrderReadDto>();
+            CreateMap<Orderer, OrdererReadDto>();
+            CreateMap<Payment, PaymentReadDto>();
+            CreateMap<Driver, DriverReadDto>();
+            CreateMap<Passenger, PassengerReadDto>();
+            CreateMap<User, UserReadDto>();
         }
     }
 }

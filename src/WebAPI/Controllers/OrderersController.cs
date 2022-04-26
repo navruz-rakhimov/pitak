@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
 using WebAPI.Interfaces;
 using WebAPI.Models;
+using WebAPI.ReadDtos;
 
 namespace WebAPI.Controllers
 {
@@ -20,41 +21,42 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Orderer>> GetOrderers()
+        public ActionResult<IEnumerable<OrdererReadDto>> GetOrderers()
         {
-            return Ok(_context.Orderers.ToList());
+            return Ok(_mapper.Map<IEnumerable<OrdererReadDto>>(_context.Orderers.ToList()));
         }
 
         [HttpGet("{id}", Name = "GetOrdererById")]
-        public ActionResult<Orderer> GetOrdererById(int id)
+        public ActionResult<OrdererReadDto> GetOrdererById(int id)
         {
             var orderer = _context.Orderers.FirstOrDefault(orderer => orderer.Id == id);
             if (orderer != null)
             {
-                return Ok(orderer);
+                return Ok(_mapper.Map<OrdererReadDto>(orderer));
             }
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Orderer>> CreateOrderer([FromBody] OrdererCreateDto ordererCreateDto)
+        public async Task<ActionResult<OrdererReadDto>> CreateOrderer([FromBody] OrdererCreateDto ordererCreateDto)
         {
             var orderer = _mapper.Map<Orderer>(ordererCreateDto);
             _context.Orderers.Add(orderer);
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute(nameof(GetOrdererById), new { Id = orderer.Id }, orderer);
+            var ordererReadDto = _mapper.Map<OrdererReadDto>(orderer);
+            return CreatedAtRoute(nameof(GetOrdererById), new { Id = ordererReadDto.Id }, ordererReadDto);
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<Orderer>> DeleteOrderer(int id)
+        public async Task<ActionResult<OrdererReadDto>> DeleteOrderer(int id)
         {
             var orderer = _context.Orderers.FirstOrDefault(orderer => orderer.Id == id);
             if (orderer != null)
             {
                 _context.Orderers.Remove(orderer);
                 await _context.SaveChangesAsync();
-                return orderer;
+                return Ok(_mapper.Map<OrdererReadDto>(orderer));
             }
             return NotFound();
         }

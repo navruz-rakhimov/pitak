@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
 using WebAPI.Interfaces;
 using WebAPI.Models;
+using WebAPI.ReadDtos;
 
 namespace WebAPI.Controllers
 {
@@ -23,18 +24,18 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<User>> GetUsers()
+        public ActionResult<IEnumerable<UserReadDto>> GetUsers()
         {
-            return Ok(_userManager.Users.ToList());
+            return Ok(_mapper.Map<IEnumerable<UserReadDto>>(_userManager.Users.ToList()));
         }
 
         [HttpGet("{id:int}", Name = "GetUserById")]
-        public ActionResult<User> GetUserById(int id)
+        public ActionResult<UserReadDto> GetUserById(int id)
         {
             var user = _userManager.Users.FirstOrDefault(user => user.Id == id);
             if (user != null)
             {
-                return Ok(user);
+                return Ok(_mapper.Map<UserReadDto>(user));
             }
             return NotFound();
         }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
 using WebAPI.Interfaces;
 using WebAPI.Models;
+using WebAPI.ReadDtos;
 
 namespace WebAPI.Controllers
 {
@@ -20,18 +21,18 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Driver>> GetDrivers()
+        public ActionResult<IEnumerable<DriverReadDto>> GetDrivers()
         {
-            return Ok(_context.Drivers.ToList());
+            return Ok(_mapper.Map<IEnumerable<DriverReadDto>>(_context.Drivers.ToList()));
         }
 
         [HttpGet("{id}", Name = "GetDriverById")]
-        public ActionResult<Driver> GetDriverById(int id)
+        public ActionResult<DriverReadDto> GetDriverById(int id)
         {
             var driver = _context.Drivers.FirstOrDefault(driver => driver.Id == id);
             if (driver != null)
             {
-                return Ok(driver);
+                return Ok(_mapper.Map<DriverReadDto>(driver));
             }
             return NotFound();
         }
