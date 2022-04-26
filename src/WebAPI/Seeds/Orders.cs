@@ -16,7 +16,7 @@ namespace WebAPI.Seeds
                     DestinationCity = "Samarkand",
                     Price = 15000,
                     IsClosed = false,
-                    Orderers = new List<Orderer> { orderers.ElementAt(0) }
+                    Orderers = new List<Orderer> { orderers.Where(o => o.IsDriver == false).First() },
                 },
             
                 new Order
@@ -30,7 +30,7 @@ namespace WebAPI.Seeds
                     DriverId = drivers.Where(driver => driver.Experience == 5).First().UserId,
                     Driver = drivers.Where(driver => driver.Experience == 5).First(),
                     IsClosed = false,
-                    Orderers = new List<Orderer> { orderers.ElementAt(1) }
+                    Orderers = new List<Orderer> { orderers.Where(o => o.IsDriver == true).First() }
                 },
             };
         }

@@ -10,9 +10,9 @@
         public decimal Price { get; set; }
         public int? DriverId { get; set; }
         public Driver Driver { get; set; }
-        public int AvailablSeats { get; set; }
+        public int? AvailablSeats { get; set; }
         public bool IsClosed { get; set; } = false;
-        public ICollection<Orderer> Orderers { get; set; }
-        public ICollection<Passenger> Passengers { get; set; }
+        public ICollection<Orderer> Orderers { get; set; } = new List<Orderer>();
+        public ICollection<Passenger> Passengers { get; set; } = new List<Passenger>();
     }
 }

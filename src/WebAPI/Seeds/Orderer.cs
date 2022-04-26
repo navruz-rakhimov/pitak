@@ -11,11 +11,13 @@ namespace WebAPI.Seeds
                 new Orderer
                 {
                     UserId = users.Where(user => user.FirstName == "Navruz").First().Id,
+                    IsDriver = false
                 },
             
                 new Orderer
                 {
                     UserId = users.Where(user => user.FirstName == "Mukhammadsaid").First().Id,
+                    IsDriver = true
                 },
             };
         }

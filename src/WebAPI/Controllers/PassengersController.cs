@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Dtos;
 using WebAPI.Interfaces;
 using WebAPI.Models;
@@ -35,6 +36,27 @@ namespace WebAPI.Controllers
                 return Ok(_mapper.Map<PassengerReadDto>(passenger));
             }
             return NotFound();
+        }
+
+        [HttpPost("{id}/orders")]
+        public async Task<ActionResult<OrderReadDto>> CreateOrder(int id, [FromBody]OrderCreateDto orderCreateDto)
+        {
+            var passenger = _context.Passengers.Include(p => p.Orders).Where(p => p.Id == id).FirstOrDefault();
+            if (passenger == null)
+            {
+                return NotFound();
+            }
+            
+            var order = _mapper.Map<Order>(orderCreateDto);
+            order.Orderers.Add(new Orderer{ UserId = passenger.UserId});
+    
+            _context.Orders.Add(order);
+            passenger.Orders.Add(order);
+            
+            await _context.SaveChangesAsync();
+
+            var orderReadDto = _mapper.Map<OrderReadDto>(order);
+            return Ok(orderReadDto);
         }
     }
 }
