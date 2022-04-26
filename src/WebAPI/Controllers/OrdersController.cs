@@ -24,7 +24,8 @@ namespace WebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<OrderReadDto>> GetOrders()
         {
-            return Ok(_mapper.Map<IEnumerable<OrderReadDto>>(_context.Orders.Include(o => o.Orderers).ToList()));
+            return Ok(_mapper.Map<IEnumerable<OrderReadDto>>(
+                _context.Orders.Include(o => o.Orderers).Include(o => o.Passengers).ToList()));
         }
 
         [HttpGet("{id}", Name = "GetOrderById")]
@@ -75,11 +76,11 @@ namespace WebAPI.Controllers
             return NotFound();
         }
 
-        [HttpPost("{id:int}/passengers/{passengerId:int}")]
-        public async Task<ActionResult<OrderReadDto>> AcceptOrder(int id, int passengerId)
+        [HttpPost("{id:int}/passengers")]
+        public async Task<ActionResult<OrderReadDto>> AcceptOrder(int id, [FromBody]PassengerAddDto passengerAddDto)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(order => order.Id == id);
-            var passenger = await _context.Passengers.FirstOrDefaultAsync(passenger => passenger.Id == passengerId);
+            var order = await _context.Orders.Include(order => order.Passengers).FirstOrDefaultAsync(order => order.Id == id);
+            var passenger = await _context.Passengers.FirstOrDefaultAsync(passenger => passenger.Id == passengerAddDto.PassengerId);
 
             if (order == null || passenger == null)
             {

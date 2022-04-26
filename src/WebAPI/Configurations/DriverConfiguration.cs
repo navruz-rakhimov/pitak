@@ -15,6 +15,8 @@ namespace WebAPI.Configurations
                 .WithMany(user => user.Drivers)
                 .HasForeignKey(driver => driver.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.HasIndex(driver => driver.UserId).IsUnique();
         }
     }
 }

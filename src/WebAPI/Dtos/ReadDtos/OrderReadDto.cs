@@ -14,7 +14,7 @@ namespace WebAPI.ReadDtos
         public int AvailablSeats { get; set; }
         public bool IsClosed { get; set; }
         public ICollection<OrdererReadDto> Orderers { get; set; }
-        public int OrdererId { get; set; }
-        public ICollection<Passenger> Passengers { get; set; }
+        public int? DriverId { get; set; }
+        public ICollection<PassengerReadDto> Passengers { get; set; }
     }
 }
