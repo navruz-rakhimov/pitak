@@ -27,6 +27,11 @@ namespace WebAPI.Seeds
                 {
                     UserId = users.Where(user => user.FirstName == "Passenger").First().Id,
                 },
+
+                new Passenger
+                {
+                    UserId = users.Where(user => user.FirstName == "Iampass").First().Id,
+                },
             };
         }
     }

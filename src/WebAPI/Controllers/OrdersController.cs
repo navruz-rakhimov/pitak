@@ -89,9 +89,19 @@ namespace WebAPI.Controllers
 
             if (order.DriverId == null)
             {
-                return BadRequest($"The order with id: ${id} doesn't have a driver");
+                return BadRequest($"The order with id: {id} doesn't have a driver");
             }
 
+            if (order.Passengers.Where(p => p.Id == passenger.Id).FirstOrDefault() != null)
+            {
+                return BadRequest("You have already accepted this order");
+            }
+
+            if (order.AvailablSeats == 0)
+            {
+                return BadRequest("No available seats");
+            }
+            order.AvailablSeats -= 1;
             order.Passengers.Add(passenger);
             await _context.SaveChangesAsync();
 
