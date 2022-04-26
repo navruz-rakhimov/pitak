@@ -6,12 +6,10 @@ services:
     user: root
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "Pa$$w0rd123"
+      MSSQL_SA_PASSWORD: "Your_password123"
       MSSQL_PID: Express
     ports:
       - "1433:1433"
-    volumes:
-      - sqlvolume:/var/opt/mssql
     
   pitakapi: 
     build:
@@ -21,6 +19,3 @@ services:
       - "8080:80"
     depends_on:
       - mssql
-
-volumes:
-  sqlvolume:
