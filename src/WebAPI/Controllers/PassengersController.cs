@@ -24,13 +24,13 @@ namespace WebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<PassengerReadDto>> GetPassengers()
         {
-            return Ok(_mapper.Map<IEnumerable<PassengerReadDto>>(_context.Passengers.ToList()));
+            return Ok(_mapper.Map<IEnumerable<PassengerReadDto>>(_context.Passengers.Include(d => d.User).ToList()));
         }
 
         [HttpGet("{id}", Name = "GetPassengerById")]
         public ActionResult<PassengerReadDto> GetPassengerById(int id)
         {
-            var passenger = _context.Passengers.FirstOrDefault(passenger => passenger.Id == id);
+            var passenger = _context.Passengers.Include(d => d.User).FirstOrDefault(passenger => passenger.Id == id);
             if (passenger != null)
             {
                 return Ok(_mapper.Map<PassengerReadDto>(passenger));

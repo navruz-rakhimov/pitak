@@ -24,13 +24,13 @@ namespace WebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<DriverReadDto>> GetDrivers()
         {
-            return Ok(_mapper.Map<IEnumerable<DriverReadDto>>(_context.Drivers.ToList()));
+            return Ok(_mapper.Map<IEnumerable<DriverReadDto>>(_context.Drivers.Include(d => d.User).ToList()));
         }
 
         [HttpGet("{id}", Name = "GetDriverById")]
         public ActionResult<DriverReadDto> GetDriverById(int id)
         {
-            var driver = _context.Drivers.FirstOrDefault(driver => driver.Id == id);
+            var driver = _context.Drivers.Include(d => d.User).FirstOrDefault(driver => driver.Id == id);
             if (driver != null)
             {
                 return Ok(_mapper.Map<DriverReadDto>(driver));
